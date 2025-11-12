@@ -1,0 +1,16 @@
+ 1024  history > tmp.txt
+ 1025  .venv310/bin/python scripts/build_constraints.py --dataset-root ./tmp_causica --output ./tmp_causica/constraints.npy
+ 1026  .venv310/bin/python scripts/extract_sem_and_save_adj.py
+ 1027  .venv310/bin/python scripts/extract_sem_and_save_adj.py
+ 1028  conda activate base
+ 1029  python main_efficient.py --data_variable_size=10 --graph_type="erdos-renyi" --repeat=100 --methods=<CHOICE> --h_tol=1e-8 --graph_degree=4 --lambda1=<LAMBDA1> --lambda2=<LAMBDA2> --data_type="synthetic"\n
+ 1030  python
+ 1031  python main_efficient.py
+ 1032  python main_efficient.py --data_variable_size=10 --graph_type="erdos-renyi" --repeat=100 --methods=nocurl --h_tol=1e-8 --graph_degree=4 --lambda1=10 --lambda2=100 --data_type="synthetic"\n
+ 1033  python3 -m venv .venv
+ 1034  source .venv/bin/activate && pip install --upgrade pip && pip install numpy scipy networkx pandas tqdm pydot
+ 1035  source .venv/bin/activate && mkdir -p data/lineardata results
+ 1036  source .venv/bin/activate && python main_efficient.py --data_sample_size=200 --data_variable_size=6 --repeat=1 --methods=nocurl --generate_data=1 --graph_type=erdos-renyi --graph_degree=2 --lambda1=10 --lambda2=1000 --h_tol=1e-8
+ 1037  source .venv/bin/activate && ls -l results
+ 1038  source .venv/bin/activate && python -c "import pandas as pd; p='results/1nocurl_6_synthetic_200_erdos-renyi_linear-gauss_2_hTol_1e-08_lambda_10.0_1000.0.pkl'; df=pd.read_pickle(p); print('columns:', list(df.columns)); print('shape:', df.shape); print('\nrow 0 metrics:'); print(df.iloc[0].to_dict())"
+ 1039  cd /Users/tkn/cdBench/DAG-NoCurl && source .venv/bin/activate && python - << 'PY'\nimport pickle, numpy as np, argparse\nfrom BPR import BPR\n\n# load data pickle created by the earlier run\npfile = 'data/lineardata/200_6_erdos-renyi_2_linear-gauss_0.pkl'\nwith open(pfile, 'rb') as f:\n    G, X = pickle.load(f)\n\n# build args namespace matching the run\nargs = argparse.Namespace()\nargs.rho_A_max = 1e+16\nargs.h_tol = 1e-8\nargs.lambda1 = 10.0\nargs.lambda2 = 1000.0\nargs.train_epochs = 10000\nargs.graph_threshold = 0.3\nargs.loss_type = 'l2'\n\n# instantiate and run BPR\nbpr = BPR(args)\nA, h, alpha, rho = bpr.fit(X, method='nocurl')\nA = np.array(A)\n# binarize by threshold used in main (graph_threshold)\nthr = args.graph_threshold\nA_bin = (np.abs(A) > thr).astype(int)\n\nprint('A shape:', A.shape)\nprint('nnz (raw):', np.count_nonzero(A))\nprint('nnz (thresholded > {}):'.format(thr), np.count_nonzero(A_bin))\n# list edges (i->j)\nedges = [(i,j,float(A[i,j])) for i in range(A.shape[0]) for j in range(A.shape[1]) if abs(A[i,j])>thr]\nprint('edges (i,j,weight):', edges)\nPY

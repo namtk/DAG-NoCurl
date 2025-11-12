@@ -2,6 +2,31 @@
 
 Code for DAG-NoCurl work
 
+## Local changes and added files (this clone)
+
+This repository was cloned from the original DAG-NoCurl project and the following files were
+added or created in this working copy to help with reproducible runs, tuning, and code navigation.
+
+New files added in this workspace:
+
+- `RUN_REPORT.md` — quick run report describing how the repository was executed here, where generated data and results are stored, and a short summary of the reconstructed graph produced by a short test run.
+- `TUNING_GUIDE.md` — parameter tuning guide: explanation of all relevant CLI parameters, rules-of-thumb for different data regimes, and tuning strategies (grid search, cross-validation).
+- `CODE_OVERVIEW.md` — short code map describing key files (`main_efficient.py`, `BPR.py`, `utils.py`, `fges_continuous_yyu.py`) and where to change behavior.
+
+Other workspace changes made while preparing reproducible runs (not all are committed):
+
+- Created `data/lineardata/` and `results/` directories to store generated datasets and output metrics. These directories are data artifacts and typically should be created on the target machine rather than tracked in Git.
+- A local virtual environment `.venv/` was used during testing; virtual environments are not committed.
+
+What changed in code / documentation:
+
+- Documentation: `RUN_REPORT.md`, `TUNING_GUIDE.md`, and `CODE_OVERVIEW.md` added to explain run steps, parameter tuning, and code structure.
+- No algorithmic changes were made to `BPR.py`, `main_efficient.py`, or `utils.py` in this session; the new docs and small utility scripts reference and use existing CLI options.
+
+The original README content follows below.
+
+---
+
 ## Getting Started
 
 ### Prerequisites
